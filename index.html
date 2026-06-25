@@ -1,4 +1,332 @@
-            margin-bottom: 40px;
+ <!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bekzat & Aisha — Тойға шақыру</title>
+    
+    <!-- Подключение шрифтов -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Библиотека анимации AOS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #faf6f0;
+            --text-color: #3b3a36;
+            --accent-color: #bfa37a;
+            --white: #ffffff;
+            --font-title: 'Playfair Display', serif;
+            --font-body: 'Montserrat', sans-serif;
+            --font-script: 'Caveat', cursive;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            background-color: #1a1a18; /* Темный фон вокруг книги для контраста */
+            font-family: var(--font-body);
+            color: var(--text-color);
+            overflow-x: hidden;
+            height: 100%;
+        }
+
+        /* === ЭФФЕКТ ОТКРЫТИЯ КНИГИ (КОНВЕРТА) === */
+        .book-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            perspective: 1500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: visibility 1s, opacity 1s;
+        }
+
+        /* Когда книга полностью открыта, скрываем обложку, чтобы работал скролл */
+        .book-wrapper.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .book-container {
+            width: 100%;
+            max-width: 450px;
+            height: 100%;
+            max-height: 800px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s ease-in-out;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            background-color: var(--bg-color);
+        }
+
+        /* Обложка книги (левая створка, которая распахивается) */
+        .book-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(240, 230, 215, 0.9), rgba(240, 230, 215, 0.9)), 
+                        url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
+            z-index: 10;
+            transform-origin: left center;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            border-left: 5px solid var(--accent-color);
+            backface-visibility: hidden;
+        }
+
+        .book-cover .monogram {
+            font-family: var(--font-script);
+            font-size: 5rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .book-cover h2 {
+            font-family: var(--font-title);
+            font-size: 2.2rem;
+            font-weight: 400;
+            margin-bottom: 30px;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        .btn-open {
+            background-color: var(--accent-color);
+            color: var(--white);
+            border: none;
+            padding: 15px 35px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            letter-spacing: 2px;
+            box-shadow: 0 5px 15px rgba(191, 163, 122, 0.4);
+            transition: transform 0.3s;
+        }
+
+        .btn-open:hover {
+            transform: scale(1.05);
+        }
+
+        /* Класс для запуска анимации открытия */
+        .book-container.opened .book-cover {
+            transform: rotateY(-140deg);
+        }
+
+        /* ===ОСНОВНОЙ КОНТЕНТ САЙТА (ПРОКРУЧИВАЕТСЯ ПОСЛЕ ОТКРЫТИЯ) === */
+        .main-content {
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+            padding-bottom: 60px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        section {
+            padding: 60px 20px;
+        }
+
+        .title-gold {
+            font-family: var(--font-title);
+            color: var(--accent-color);
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        /* ГЛАВНЫЙ ЭКРАН ИЗ КНИГИ */
+        .hero {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-monogram {
+            font-family: var(--font-script);
+            font-size: 4rem;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .hero-tag {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            color: #8c8a82;
+        }
+
+        .hero h1 {
+            font-family: var(--font-title);
+            font-size: 2.8rem;
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-date {
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            border-top: 1px solid var(--accent-color);
+            border-bottom: 1px solid var(--accent-color);
+            padding: 8px 20px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .hero-time {
+            font-size: 1.1rem;
+            margin-top: 10px;
+            color: #666;
+            letter-spacing: 1px;
+        }
+
+        /* ТЕКСТ ПРИГЛАШЕНИЯ */
+        .invitation-text {
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: #555552;
+            line-height: 1.8;
+        }
+        .invitation-text p {
+            margin-bottom: 25px;
+        }
+        .signature-title {
+            font-family: var(--font-script);
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-top: 30px;
+        }
+        .parents-names {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 5px;
+            color: var(--text-color);
+        }
+
+        /* КАЛЕНДАРЬ */
+        .calendar-wrapper {
+            margin: 20px auto;
+            max-width: 320px;
+            background: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(191, 163, 122, 0.08);
+        }
+        .calendar-month {
+            font-family: var(--font-title);
+            font-size: 1.3rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .calendar-table th {
+            font-size: 0.8rem;
+            color: #8c8a82;
+            padding-bottom: 10px;
+            font-weight: 400;
+        }
+        .calendar-table td {
+            padding: 8px 0;
+            font-size: 0.95rem;
+            color: #444;
+            position: relative;
+            width: 40px;
+            height: 40px;
+        }
+        .calendar-table td.active {
+            color: var(--white);
+            font-weight: 600;
+            z-index: 1;
+        }
+        .calendar-table td.active::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 36px;
+            height: 36px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            z-index: -1;
+            box-shadow: 0 4px 10px rgba(191, 163, 122, 0.4);
+        }
+
+        /* ТАЙМЕР */
+        .countdown-container {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 30px 15px;
+            box-shadow: 0 10px 30px rgba(191, 163, 122, 0.08);
+        }
+        .timer {
+            display: flex;
+            justify-content: space-around;
+        }
+        .timer-number {
+            font-family: var(--font-title);
+            font-size: 2.2rem;
+            color: var(--accent-color);
+            display: block;
+            font-weight: 400;
+        }
+        .timer-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8c8a82;
+        }
+
+        /* ПРОГРАММА ДНЯ */
+        .timeline {
+            position: relative;
+            margin: 40px auto 0 auto;
+            padding-left: 30px;
+            text-align: left;
+            max-width: 400px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: var(--accent-color);
+        }
+        .timeline-item {
+            position: relative;  margin-bottom: 40px;
         }
         .timeline-item::before {
             content: '';
