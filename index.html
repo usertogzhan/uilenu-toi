@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тойға шақыру</title>
+    
+    <!-- Подключение элегантных шрифтов Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Подключение библиотеки анимации AOS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* === БАЗОВЫЕ НАСТРОЙКИ (Цвета, Шрифты) === */
+        :root {
+            --bg-color: #faf6f0;       /* Нежный кремовый фон */
+            --text-color: #3b3a36;     /* Благородный темно-серый */
+            --accent-color: #bfa37a;   /* Мягкое матовое золото */
+            --white: #ffffff;
+            --font-title: 'Playfair Display', serif;
+            --font-body: 'Montserrat', sans-serif;
+            --font-script: 'Caveat', cursive;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        section {
+            padding: 60px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .title-gold {
+            font-family: var(--font-title);
+            color: var(--accent-color);
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        /* === 1. ГЛАВНЫЙ ЭКРАН (ОБЛОЖКА) === */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            /* Чтобы поставить свое фото, замените ссылку в url() ниже или оставьте этот элегантный абстрактный фон */
+            background: linear-gradient(rgba(250, 246, 240, 0.85), rgba(250, 246, 240, 0.85)), 
+                        url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
+        }
+
+        .hero-monogram {
+            font-family: var(--font-script);
+            font-size: 4rem;
+            color: var(--accent-color);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .hero-tag {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            color: #8c8a82;
+        }
+
+        .hero h1 {
+            font-family: var(--font-title);
+            font-size: 3rem;
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .hero-date {
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            border-top: 1px solid var(--accent-color);
+            border-bottom: 1px solid var(--accent-color);
+            padding: 8px 20px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        /* === 2. ПРИГЛАСИТЕЛЬНЫЙ ТЕКСТ === */
+        .invitation-text {
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: #555552;
+        }
+        .invitation-text p {
+            margin-bottom: 20px;
+        }
+        .signature {
+            font-family: var(--font-script);
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-top: 20px;
+        }
+
+        /* === 3. ТАЙМЕР === */
+        .countdown-container {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 30px 15px;
+            box-shadow: 0 10px 30px rgba(191, 163, 122, 0.1);
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .timer {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .timer-item {
+            flex: 1;
+        }
+
+        .timer-number {
+            font-family: var(--font-title);
+            font-size: 2rem;
+            color: var(--accent-color);
+            display: block;
+            font-weight: 600;
+        }
+
+        .timer-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8c8a82;
+        }
+
+        /* === 4. ПРОГРАММА ДНЯ (ТАЙМЛАЙН) === */
+        .timeline {
+            position: relative;
+            margin: 40px auto 0 auto;
+            padding-left: 30px;
+            text-align: left;
+            max-width: 450px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: var(--accent-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: var(--bg-color);
+            border: 2px solid var(--accent-color);
+        }
+
+        .timeline-time {
+            font-weight: 600;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .timeline-desc h3 {
+            font-family: var(--font-title);
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-bottom: 5px;
+        }
+
+        .timeline-desc p {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        /* === 5. МЕСТО ПРОВЕДЕНИЯ === */
+        .location-card {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 30px 20px;
+            box-shadow: 0 10px 30px rgba(191, 163, 122, 0.1);
+        }
+        
+        .restaurant-name {
+            font-family: var(--font-title);
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        .address {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .btn-maps {
+            display: block;
+            background-color: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--text-color);
+            padding: 12px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin: 10px auto;
+            max-width: 250px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-maps:hover {
+            background-color: var(--accent-color);
+            color: var(--white);
+        }
+
+        /* === 6. АНКЕТА ГОСТЯ === */
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            background-color: var(--white);
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            color: var(--text-color);
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--white);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .radio-option input {
+            accent-color: var(--accent-color);
+            width: 18px;
+            height: 18px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: var(--accent-color);
+            color: var(--white);
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(191, 163, 122, 0.3);
+            transition: opacity 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+
+        /* === МУЗЫКАЛЬНЫЙ ПЛЕЕР === */
+        .audio-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .music-btn {
+            background-color: var(--white);
+            border: 1px solid var(--accent-color);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+
+        /* Анимация вращения когда музыка играет */
+        .rotating {
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Музыкальный плеер (Не забудьте добавить фоновую музыку music.mp3 в папку проекта) -->
+    <div class="audio-player">
+        <button class="music-btn" id="musicBtn">🎵</button>
+        <audio id="bgMusic" loop>
+            <source src="musicc.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- СЕКЦИЯ 1: ОБЛОЖКА -->
+    <section class="hero">
+        <!-- Первая буква имени Жениха & Невесты -->
+        <div class="hero-monogram" data-aos="fade-down" data-aos-duration="1000">B & A</div>
+        <div class="hero-tag" data-aos="fade-up" data-aos-duration="1000">Тойға шақыру</div>
+        
+        <!-- ИМЕНА ЖЕНИХА И НЕВЕСТЫ -->
+        <h1 data-aos="zoom-in" data-aos-duration="1200">Bekzat<br>&<br>Aisha</h1>
+        
+        <!-- ДАТА МЕРОПРИЯТИЯ -->
+        <div class="hero-date" data-aos="fade-up" data-aos-duration="1400">17.08.2026</div>
+    </section>
+
+
+    <!-- СЕКЦИЯ 2: ПРИГЛАШЕНИЕ -->
+    <section class="invitation-text" data-aos="fade-up">
+        <div class="title-gold">Құрметті қонақтар!</div>
+        <p>Сіздерді өміріміздің ең маңызды әрі қуанышты күні — үйлену тойымыздың салтанатты сәтіне ортақтасуға шын жүректен шақырамыз!</p>
+        <p>Ақ тілектеріңіз бен қуанышты жүздеріңіз біздің мерекеміздің ең үлкен сәні болмақ.</p>
+        
+        <div class="signature">Той иелері:</div>
+        <p style="font-weight: 600; margin-top: 5px;">Қуат-Багдагүл</p>
+    </section>
+
+
+    <!-- СЕКЦИЯ 3: ТАЙМЕР ОБРАТНОГО ОТСЧЕТА -->
+    <section data-aos="fade-up">
+        <div class="title-gold">Тойға дейін қалды:</div>
+        <div class="countdown-container">
+            <div class="timer">
+                <div class="timer-item">
+                    <span class="timer-number" id="days">00</span>
+                    <span class="timer-label">Күн (дней)</span>
+                </div>
+                <div class="timer-item">
+                    <span class="timer-number" id="hours">00</span>
+                    <span class="timer-label">Сағат (час)</span>
+                </div>
+                <div class="timer-item">
+                    <span class="timer-number" id="minutes">00</span>
+                    <span class="timer-label">Минут</span>
+                </div>
+                <div class="timer-item">
+                    <span class="timer-number" id="seconds">00</span>
+                    <span class="timer-label">Секунд</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- СЕКЦИЯ 5: МЕСТО ПРОВЕДЕНИЯ -->
+    <section data-aos="fade-up">
+        <div class="title-gold">Мекен-жайымыз</div>
+        <div class="location-card">
+            <!-- НАЗВАНИЕ РЕСТОРАНА -->
+            <div class="restaurant-name">«Tomiris Palace» мейрамханасы </div>
+            <!-- АДРЕС -->
+            <div class="address"> Ақтау қаласы, Промышленная зона 6, 7/9 </div>
+            
+            <!-- ССЫЛКИ НА КАРТЫ (Замените на свои ссылки) -->
+            <a href="https://2gis.kz/aktau/geo/70000001099302424" target="_blank" class="btn-maps">Открыть в 2GIS</a>
+        </div>
+    </section>
+
+
+    <!-- СЕКЦИЯ 6: АНКЕТА ГОСТЯ -->
+    <section data-aos="fade-up">
+        <div class="title-gold">Мейрамға қатысуыңызды растаңыз</div>
+        
+        <!-- Замените СВОЙ_ИДЕНТИФИКАТОР в action после регистрации на formspree.io -->
+        <form action="https://formspree.io/f/СВОЙ_ИДЕНТИФИКАТОР" method="POST">
+            
+            <div class="form-group">
+                <label for="name">Аты-жөніңіз (Ваше Имя и Фамилия):</label>
+                <input type="text" name="Имя_Гостя" id="name" class="form-control" placeholder="Асхат пен Аружан" required>
+            </div>
+
+            <div class="form-group">
+                <label>Келе аласыз ба? (Сможете прийти?)</label>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="Присутствие" value="Келемін (Приду)" checked>
+                        <span>Өзім келемін / Приду один(-очка)</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="Присутствие" value="Жұбыммен келемін (Приду с парой)">
+                        <span>Жұбыммен келемін / Приду с парой</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="Присутствие" value="Өкінішке орай, келе алмаймын (Не смогу)">
+                        <span>Өкінішке орай, келе алмаймын / Не смогу</span>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Жіберу / Отправить</button>
+        </form>
+    </section>
+
+    <!-- Скрипты: Библиотека анимации AOS + Логика таймера и музыки -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Инициализация красивой анимации скролла
+        AOS.init({
+            once: true,
+            duration: 800
+        });
+
+        // НАСТРОЙКА ТАЙМЕРА ОБРАТНОГО ОТСЧЕТА
+        // Установите дату вашего тоя (Формат: Год, Месяц(от 0 до 11), День, Часы, Минуты)
+        // ВНИМАНИЕ: Август - это 7 месяц в JS (январь=0, февраль=1 ... август=7)
+        const weddingDate = new Date(2026, 7, 17, 19, 0, 0).getTime();
+
+        const timerFunction = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            if (distance < 0) {
+                clearInterval(timerFunction);
+                document.getElementById("days").innerText = "00";
+                document.getElementById("hours").innerText = "00";
+                document.getElementById("minutes").innerText = "00";
+                document.getElementById("seconds").innerText = "00";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+        }, 1000);
+
+        // ЛОГИКА МУЗЫКАЛЬНОГО ПЛЕЕРА
+        const musicBtn = document.getElementById('musicBtn');
+        const audio = document.getElementById('bgMusic');
+
+        musicBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play().catch(e => console.log("Музыка начнет играть после взаимодействия"));
+                musicBtn.classList.add('rotating');
+            } else {
+                audio.pause();
+                musicBtn.classList.remove('rotating');
+            }
+        });
+    </script>
+</body>
+</html>
