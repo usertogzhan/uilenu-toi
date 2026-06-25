@@ -1,14 +1,14 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="kk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bekzat & Aisha — Тойға шақыру</title>
+    <title>Didar & Dana — Тойға шақыру</title>
     
     <!-- Подключение шрифтов -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght=0,400;0,600;1,400&display=swap" rel="stylesheet">
     
     <!-- Библиотека анимации AOS -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -31,681 +31,502 @@
         }
 
         body, html {
-            background-color: #1a1a18; /* Темный фон вокруг книги для контраста */
+            background-color: #1a1a18;
             font-family: var(--font-body);
             color: var(--text-color);
             overflow-x: hidden;
             height: 100%;
         }
 
-        /* === ЭФФЕКТ ОТКРЫТИЯ КНИГИ (КОНВЕРТА) === */
-        .book-wrapper {
+        /* === ЭФФЕКТ РАЗДВИЖНЫХ ШТОР ИЗ ВИДЕО === */
+        .curtain-wrapper {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
             z-index: 9999;
-            perspective: 1500px;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: visibility 1s, opacity 1s;
+            overflow: hidden;
+            transition: visibility 1.2s;
         }
 
-        /* Когда книга полностью открыта, скрываем обложку, чтобы работал скролл */
-        .book-wrapper.hidden {
-            opacity: 0;
+        .curtain-wrapper.hidden {
             visibility: hidden;
             pointer-events: none;
         }
 
-        .book-container {
-            width: 100%;
-            max-width: 450px;
-            height: 100%;
-            max-height: 800px;
+        /* Две половинки экрана */
+        .curtain-side {
+            width: 50vw;
+            height: 100vh;
+            background: linear-gradient(rgba(20, 20, 18, 0.85), rgba(20, 20, 18, 0.85)), 
+                        url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
             position: relative;
-            transform-style: preserve-3d;
-            transition: transform 1s ease-in-out;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
-            background-color: var(--bg-color);
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+            align-items: center;
         }
 
-        /* Обложка книги (левая створка, которая распахивается) */
-        .book-cover {
+        .curtain-left {
+            transform-origin: left center;
+            justify-content: flex-end;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .curtain-right {
+            transform-origin: right center;
+            justify-content: flex-start;
+        }
+
+        /* Центрированный текст на обложке */
+        .curtain-content {
             position: absolute;
+            width: 100vw;
+            height: 100vh;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(rgba(240, 230, 215, 0.9), rgba(240, 230, 215, 0.9)), 
-                        url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
-            z-index: 10;
-            transform-origin: left center;
-            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 30px;
-            border-left: 5px solid var(--accent-color);
-            backface-visibility: hidden;
+            z-index: 10;
+            transition: opacity 0.5s ease;
         }
 
-        .book-cover .monogram {
-            font-family: var(--font-script);
-            font-size: 5rem;
-            color: var(--accent-color);
-            margin-bottom: 20px;
-        }
-
-        .book-cover h2 {
+        .curtain-content h2 {
             font-family: var(--font-title);
-            font-size: 2.2rem;
-            font-weight: 400;
-            margin-bottom: 30px;
-            color: var(--text-color);
+            font-size: 2.5rem;
+            font-style: italic;
+            color: #f5eedc;
             text-align: center;
+            font-weight: 400;
+            margin-bottom: 40px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
-        .btn-open {
-            background-color: var(--accent-color);
-            color: var(--white);
-            border: none;
-            padding: 15px 35px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 30px;
+        /* Круглая кнопка НАЖМИТЕ */
+        .btn-trigger {
+            width: 120px;
+            height: 120px;
+            background-color: #d1b48c;
+            color: #3b3a36;
+            border: 4px solid #fff;
+            border-radius: 50%;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: bold;
+            letter-spacing: 1px;
             cursor: pointer;
-            letter-spacing: 2px;
-            box-shadow: 0 5px 15px rgba(191, 163, 122, 0.4);
-            transition: transform 0.3s;
+            box-shadow: 0 0 25px rgba(209, 180, 140, 0.6), inset 0 0 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, opacity 0.5s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .btn-open:hover {
-            transform: scale(1.05);
+        .btn-trigger:hover {
+            transform: scale(1.08);
         }
 
-        /* Класс для запуска анимации открытия */
-        .book-container.opened .book-cover {
-            transform: rotateY(-140deg);
+        /* Классы для запуска анимации */
+        .curtain-wrapper.opened .curtain-left {
+            transform: translateX(-100%);
+        }
+        .curtain-wrapper.opened .curtain-right {
+            transform: translateX(100%);
+        }
+        .curtain-wrapper.opened .curtain-content {
+            opacity: 0;
+            pointer-events: none;
         }
 
-        /* ===ОСНОВНОЙ КОНТЕНТ САЙТА (ПРОКРУЧИВАЕТСЯ ПОСЛЕ ОТКРЫТИЯ) === */
+        /* === ОСНОВНОЙ КОНТЕНТ САЙТА === */
         .main-content {
             background-color: var(--bg-color);
             min-height: 100vh;
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
             margin: 0 auto;
             text-align: center;
             padding-bottom: 60px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            box-shadow: 0 0 30px rgba(0,0,0,0.2);
+        }
+
+        /* Секция с фотографией и рваным краем */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 65vh;
+            background: url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
+        }
+
+        /* Эффект рваной бумаги снизу фото */
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background-color: var(--bg-color);
+            /* Маска в виде рваных волн */
+            clip-path: polygon(0% 100%, 100% 100%, 100% 40%, 95% 70%, 88% 30%, 80% 65%, 72% 35%, 65% 75%, 58% 45%, 50% 80%, 42% 40%, 35% 70%, 27% 30%, 20% 65%, 12% 35%, 5% 70%, 0% 40%);
         }
 
         section {
-            padding: 60px 20px;
+            padding: 40px 24px;
+        }
+
+        .names-title {
+            font-family: var(--font-script);
+            font-size: 3.5rem;
+            color: var(--text-color);
+            margin: 20px 0 10px 0;
+        }
+
+        .wedding-day-text {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #8c8a82;
+            margin-bottom: 15px;
+        }
+
+        .main-date {
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+            margin-bottom: 40px;
         }
 
         .title-gold {
-            font-family: var(--font-title);
-            color: var(--accent-color);
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-            font-weight: 400;
-        }
-
-        /* ГЛАВНЫЙ ЭКРАН ИЗ КНИГИ */
-        .hero {
-            height: 90vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .hero-monogram {
             font-family: var(--font-script);
-            font-size: 4rem;
+            font-size: 3.5rem;
             color: var(--accent-color);
-            margin-bottom: 10px;
-        }
-
-        .hero-tag {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            margin-bottom: 20px;
-            color: #8c8a82;
-        }
-
-        .hero h1 {
-            font-family: var(--font-title);
-            font-size: 2.8rem;
-            font-weight: 400;
-            line-height: 1.2;
             margin-bottom: 20px;
         }
 
-        .hero-date {
-            font-size: 1.2rem;
-            letter-spacing: 3px;
-            border-top: 1px solid var(--accent-color);
-            border-bottom: 1px solid var(--accent-color);
-            padding: 8px 20px;
-            display: inline-block;
-            margin-top: 10px;
-        }
-
-        .hero-time {
-            font-size: 1.1rem;
-            margin-top: 10px;
-            color: #666;
-            letter-spacing: 1px;
-        }
-
-        /* ТЕКСТ ПРИГЛАШЕНИЯ */
         .invitation-text {
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 300;
             color: #555552;
             line-height: 1.8;
         }
-        .invitation-text p {
-            margin-bottom: 25px;
+
+        /* ТАЙМЕР */
+        .timer-grid {
+            display: flex;
+            justify-content: space-between;
+            max-width: 340px;
+            margin: 30px auto;
         }
-        .signature-title {
-            font-family: var(--font-script);
-            font-size: 2.5rem;
-            color: var(--accent-color);
-            margin-top: 30px;
+        .timer-box {
+            text-align: center;
+            width: 22%;
         }
-        .parents-names {
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-top: 5px;
+        .timer-num {
+            font-family: var(--font-title);
+            font-size: 2rem;
             color: var(--text-color);
+            display: block;
+        }
+        .timer-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #8c8a82;
+            letter-spacing: 1px;
         }
 
         /* КАЛЕНДАРЬ */
-        .calendar-wrapper {
-            margin: 20px auto;
-            max-width: 320px;
+        .calendar-card {
             background: var(--white);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(191, 163, 122, 0.08);
+            padding: 25px 20px;
+            border-radius: 2px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            margin: 20px auto;
+            max-width: 340px;
         }
-        .calendar-month {
+        .calendar-month-title {
             font-family: var(--font-title);
-            font-size: 1.3rem;
-            color: var(--accent-color);
-            margin-bottom: 15px;
-            text-transform: uppercase;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
             letter-spacing: 2px;
+            text-transform: uppercase;
         }
-        .calendar-table {
+        .calendar-grid {
             width: 100%;
             border-collapse: collapse;
         }
-        .calendar-table th {
-            font-size: 0.8rem;
-            color: #8c8a82;
-            padding-bottom: 10px;
+        .calendar-grid th {
+            font-size: 0.75rem;
+            color: #999;
+            padding-bottom: 12px;
             font-weight: 400;
         }
-        .calendar-table td {
-            padding: 8px 0;
+        .calendar-grid td {
+            padding: 10px 0;
             font-size: 0.95rem;
-            color: #444;
             position: relative;
-            width: 40px;
-            height: 40px;
         }
-        .calendar-table td.active {
+        .calendar-grid td.wedding-day {
             color: var(--white);
-            font-weight: 600;
             z-index: 1;
         }
-        .calendar-table td.active::before {
-            content: '';
+        /* Сердечко вокруг даты */
+        .calendar-grid td.wedding-day::before {
+            content: '❤️';
             position: absolute;
             left: 50%;
-            top: 50%;
+            top: 48%;
             transform: translate(-50%, -50%);
-            width: 36px;
-            height: 36px;
-            background-color: var(--accent-color);
-            border-radius: 50%;
+            font-size: 1.9rem;
             z-index: -1;
-            box-shadow: 0 4px 10px rgba(191, 163, 122, 0.4);
         }
 
-        /* ТАЙМЕР */
-        .countdown-container {
-            background-color: var(--white);
-            border-radius: 15px;
-            padding: 30px 15px;
-            box-shadow: 0 10px 30px rgba(191, 163, 122, 0.08);
-        }
-        .timer {
-            display: flex;
-            justify-content: space-around;
-        }
-        .timer-number {
-            font-family: var(--font-title);
-            font-size: 2.2rem;
-            color: var(--accent-color);
-            display: block;
-            font-weight: 400;
-        }
-        .timer-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #8c8a82;
-        }
-
-        /* ПРОГРАММА ДНЯ */
-        .timeline {
-            position: relative;
-            margin: 40px auto 0 auto;
-            padding-left: 30px;
-            text-align: left;
-            max-width: 400px;
-        }
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 7px;
-            top: 0;
-            bottom: 0;
-            width: 1px;
-            background-color: var(--accent-color);
-        }
-        .timeline-item {
-            position: relative;  margin-bottom: 40px;
-        }
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -28px;
-            top: 5px;
-            width: 13px;
-            height: 13px;
-            border-radius: 50%;
-            background-color: var(--bg-color);
-            border: 2px solid var(--accent-color);
-        }
-        .timeline-time {
-            font-weight: 600;
-            color: var(--accent-color);
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-        }
-        .timeline-desc h3 {
+        .section-subtitle {
             font-family: var(--font-title);
             font-size: 1.2rem;
-            font-weight: 400;
-            margin-bottom: 5px;
-        }
-        .timeline-desc p {
-            font-size: 0.9rem;
-            color: #777;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
         }
 
-        /* МЕСТО ПРОВЕДЕНИЯ */
-        .location-card {
-            background-color: var(--white);
-            border-radius: 15px;
-            padding: 30px 20px;
-            box-shadow: 0 10px 30px rgba(191, 163, 122, 0.08);
-        }
-        .restaurant-name {
+        .time-display {
+            font-size: 2rem;
             font-family: var(--font-title);
-            font-size: 1.6rem;
+            color: var(--accent-color);
             margin-bottom: 10px;
-            color: var(--text-color);
         }
-        .address {
-            font-size: 0.95rem;
-            color: #666;
-            margin-bottom: 25px;
-        }
-        .btn-maps {
-            display: block;
-            background-color: transparent;
-            border: 1px solid var(--accent-color);
-            color: var(--text-color);
-            padding: 12px 20px;
-            border-radius: 30px;
+
+        /* КНОПКА КАРТЫ */
+        .btn-map-link {
+            display: inline-block;
+            background-color: #222;
+            color: #fff;
+            padding: 14px 40px;
             text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            margin: 10px auto;
-            max-width: 250px;
-            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 15px;
+            transition: background-color 0.3s;
         }
-        .btn-maps:hover {
+        .btn-map-link:hover {
             background-color: var(--accent-color);
-            color: var(--white);
         }
 
-        /* АНКЕТА ГОСТЯ */
-        .form-group {
-            text-align: left;
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-        .form-control {
+        /* АНКЕТА */
+        .input-field {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            background-color: var(--white);
-            border-radius: 8px;
-            font-family: var(--font-body);
-            font-size: 1rem;
-            outline: none;
-        }
-        .radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .radio-option {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background-color: var(--white);
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-            cursor: pointer;
-        }
-        .radio-option input {
-            accent-color: var(--accent-color);
-            width: 18px;
-            height: 18px;
-        }
-        .btn-submit {
-            width: 100%;
-            background-color: var(--accent-color);
-            color: var(--white);
+            padding: 14px;
+            background-color: #f2ede4;
             border: none;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
+            margin-bottom: 15px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            outline: none;
+            text-align: center;
+        }
+        .select-option {
+            width: 100%;
+            padding: 14px;
+            background-color: #222;
+            color: #fff;
+            border: none;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(191, 163, 122, 0.3);
-            margin-top: 10px;
+            margin-bottom: 10px;
+            transition: opacity 0.3s;
+        }
+        .select-option:hover {
+            opacity: 0.9;
         }
 
-        /* МУЗЫКАЛЬНЫЙ ПЛЕЕР (ВИНИЛ) */
-        .audio-player {
+        /* МУЗЫКАЛЬНЫЙ ПЛЕЕР */
+        .audio-control {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            bottom: 30px;
+            left: 30px;
             z-index: 1000;
         }
-        .music-btn {
-            background-color: #222;
-            border: 2px solid var(--accent-color);
-            width: 50px;
-            height: 50px;
+        .audio-wave-btn {
+            background-color: rgba(255,255,255,0.9);
+            border: none;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.4rem;
-            color: var(--white);
-        }
-        .rotating {
-            animation: spin 4s linear infinite;
-        }
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
+            font-size: 1.2rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- МУЗЫКАЛЬНЫЙ ПЛЕЕР -->
-    <div class="audio-player">
-        <button class="music-btn" id="musicBtn">💿</button>
+    <!-- МУЗЫКА -->
+    <div class="audio-control">
+        <button class="audio-wave-btn" id="musicBtn">🎵</button>
         <audio id="bgMusic" loop>
             <source src="music.mp3" type="audio/mpeg">
         </audio>
     </div>
 
-    <!-- ЭКРАН-КНИГА (ОБЛОЖКА ПРИ ОТКРЫТИИ) -->
-    <div class="book-wrapper" id="bookWrapper">
-        <div class="book-container" id="bookContainer">
-            <div class="book-cover">
-                <div class="monogram">B & A</div>
-                <h2>Toi Invitation</h2>
-                <button class="btn-open" id="openBtn">АШУ / ОТКРЫТЬ</button>
-            </div>
+    <!-- РАЗДВИЖНЫЕ ШТОРЫ (ОБЛОЖКА ИЗ ВИДЕО) -->
+    <div class="curtain-wrapper" id="curtainWrapper">
+        <div class="curtain-side curtain-left"></div>
+        <div class="curtain-side curtain-right"></div>
+        <div class="curtain-content">
+            <h2>Үйлену тойға<br>шақыру</h2>
+            <button class="btn-trigger" id="openBtn">НАЖМИТЕ</button>
         </div>
     </div>
 
     <!-- ОСНОВНОЙ САЙТ -->
     <div class="main-content">
         
-        <!-- СЕКЦИЯ 1: ГЛАВНЫЙ ЭКРАН -->
-        <section class="hero">
-            <div class="hero-monogram" data-aos="fade-down">B & A</div>
-            <div class="hero-tag" data-aos="fade-up">Тойға шақыру</div>
-            <h1 data-aos="zoom-in">Bekzat<br>&<br>Aisha</h1>
-            <div class="hero-date" data-aos="fade-up">17.08.2026</div>
-            <div class="hero-time" data-aos="fade-up">Сағат / Время: 19:00</div>
+        <!-- ФОТО И ИМЕНА -->
+        <div class="hero-section"></div>
+        
+        <section style="padding-top: 10px;">
+            <div class="wedding-day-text">Wedding Day</div>
+            <div class="names-title">Didar & Dana</div>
+            <div class="main-date">12 / 9 / 2026</div>
         </section>
 
-        <!-- СЕКЦИЯ 2: ТЕКСТ ПРИГЛАШЕНИЯ -->
-        <section class="invitation-text" data-aos="fade-up">
-            <div class="title-gold">Құрметті қонақтар!</div>
-            <p>Сіздерді өміріміздің ең маңызды әрі қуанышты күні — үйлену тойымыздың салтанатты сәтіне ортақтасуға шын жүректен шақырамыз!</p>
-            <p>Ақ тілектеріңіз бен қуанышты жүздеріңіз біздің мерекеміздің ең үлкен сәні болмақ.</p>
-            
-            <div class="signature-title">Той иелері:</div>
-            <div class="parents-names">Қуат - Багдагүл</div>
-            <div class="parents-names" style="margin-top: 5px;">Таңат - Набат</div>
-        </section>
-
-        <!-- СЕКЦИЯ 3: КАЛЕНДАРЬ -->
+        <!-- ТЕКСТ ПРИГЛАШЕНИЯ -->
         <section data-aos="fade-up">
-            <div class="title-gold">Тамыз / Август 2026</div>
-            <div class="calendar-wrapper">
-                <table class="calendar-table">
+            <div class="title-gold">Құрметті</div>
+            <div class="invitation-text">
+                Ағайын-туыс, бауырлар, құда-жекжат, нағашы-жиен, бөлелер, құрбы-құрдас, дос-жарандар, әріптестер, көршілер! Сіз(дер)ді ұлымыз Дидар мен келініміз Дананың үйлену тойына арналған салтанатты ақ дастарханымыздың қадірлі қонағы болуға шақырамыз!
+            </div>
+        </section>
+
+        <!-- ТАЙМЕР -->
+        <section data-aos="fade-up">
+            <div class="timer-grid">
+                <div class="timer-box"><span class="timer-num" id="days">00</span><span class="timer-label">Күн</span></div>
+                <div class="timer-box"><span class="timer-num" id="hours">00</span><span class="timer-label">Сағат</span></div>
+                <div class="timer-box"><span class="timer-num" id="minutes">00</span><span class="timer-label">Минут</span></div>
+                <div class="timer-box"><span class="timer-num" id="seconds">00</span><span class="timer-label">Секунд</span></div>
+            </div>
+        </section>
+
+        <!-- КАЛЕНДАРЬ С СЕРДЕЧКОМ -->
+        <section data-aos="fade-up">
+            <div class="section-subtitle">Той салтанаты:</div>
+            <div class="calendar-card">
+                <div class="calendar-month-title">Қыркүйек / Сентябрь 2026</div>
+                <table class="calendar-grid">
                     <thead>
                         <tr>
-                            <th>Дс</th><th>Сс</th><th>Бс</th><th>Жс</th><th>Жм</th><th>Сн</th><th>Жс</th>
+                            <th>дс</th><th>сс</th><th>ср</th><th>бс</th><th>жс</th><th>см</th><th>жс</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td></td><td></td><td></td><td></td><td></td><td>1</td><td>2</td>
-                        </tr>
-                        <tr>
-                            <td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td>
-                        </tr>
-                        <tr>
-                            <td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td>
-                        </tr>
-                        <tr>
-                            <td class="active">17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td>
-                        </tr>
-                        <tr>
-                            <td>24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td>
-                        </tr>
-                        <tr>
-                            <td>31</td><td></td><td></td><td></td><td></td><td></td><td></td>
-                        </tr>
+                        <tr><td></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td></tr>
+                        <tr><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td class="wedding-day">12</td><td>13</td></tr>
+                        <tr><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td></tr>
+                        <tr><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td></tr>
+                        <tr><td>28</td><td>29</td><td>30</td><td></td><td></td><td></td><td></td></tr>
                     </tbody>
                 </table>
             </div>
         </section>
 
-        <!-- СЕКЦИЯ 4: ТАЙМЕР -->
+        <!-- УКАЗАНИЕ ВРЕМЕНИ -->
         <section data-aos="fade-up">
-            <div class="title-gold">Тойға дейін қалды:</div>
-            <div class="countdown-container">
-                <div class="timer">
-                    <div class="timer-item">
-                        <span class="timer-number" id="days">00</span>
-                        <span class="timer-label">Күн</span>
-                    </div>
-                    <div class="timer-item">
-                        <span class="timer-number" id="hours">00</span>
-                        <span class="timer-label">Сағат</span>
-                    </div>
-                    <div class="timer-item">
-                        <span class="timer-number" id="minutes">00</span>
-                        <span class="timer-label">Минут</span>
-                    </div>
-                    <div class="timer-item">
-                        <span class="timer-number" id="seconds">00</span>
-                        <span class="timer-label">Секунд</span>
-                    </div>
-                </div>
-            </div>
+            <div class="section-subtitle">Басталу уақыты:</div>
+            <div class="time-display">18:00</div>
         </section>
 
-        <!-- СЕКЦИЯ 5: ПРОГРАММА ДНЯ -->
+        <!-- МЕСТО ПРОВЕДЕНИЯ -->
         <section data-aos="fade-up">
-            <div class="title-gold">Той бағдарламасы</div>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-time">19:00</div>
-                    <div class="timeline-desc">
-                        <h3>Қонақтарды қарсы алу</h3>
-                        <p>Сбор гостей, фуршетная зона и памятные фотографии</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-time">19:30</div>
-                    <div class="timeline-desc">
-                        <h3>Неке қию салтанаты</h3>
-                        <p>Официальная выездная регистрация брака</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-time">20:00</div>
-                    <div class="timeline-desc">
-                        <h3>Ұлы тойдың басталуы</h3>
-                        <p>Торжественный запуск банкетного шоу-вечера</p>
-                    </div>
-                </div>
+            <div class="section-subtitle">Мекен-жайымыз:</div>
+            <div class="invitation-text" style="font-weight: 400;">
+                Алматы облысы, Талғар қаласы, Қайнарбулақ, 36 көшесі, «Duman Grand Hall» мейрамханасы
             </div>
+            <a href="https://2gis.kz" target="_blank" class="btn-map-link">Картаны ашу</a>
         </section>
 
-        <!-- СЕКЦИЯ 6: МЕСТО ПРОВЕДЕНИЯ -->
+        <!-- ТОЙ ИЕЛЕРІ -->
         <section data-aos="fade-up">
-            <div class="title-gold">Мекен-жайымыз</div>
-            <div class="location-card">
-                <div class="restaurant-name">Ресторан «Tomiris Palace»</div>
-                <div class="address">Адрес ресторана (впишите сюда ваш точный адрес)</div>
-                <a href="https://2gis.kz" target="_blank" class="btn-maps">Открыть в 2GIS</a>
-                <a href="https://maps.yandex.ru" target="_blank" class="btn-maps">Открыть в Яндекс.Картах</a>
-            </div>
+            <div class="section-subtitle">Той иелері:</div>
+            <div class="names-title" style="font-size: 2.8rem; margin-top: 5px;">Әлімхан - Айгүл</div>
         </section>
 
-        <!-- СЕКЦИЯ 7: АНКЕТА -->
+        <!-- АНКЕТА ГОСТЯ -->
         <section data-aos="fade-up">
-            <div class="title-gold">Сауалнама</div>
-            <p style="margin-bottom: 20px; font-size: 0.95rem; color: #555;">Өтінеміз, қатысуыңызды 01.08.2026 күнге дейін растаңыз</p>
-            
+            <div class="invitation-text" style="margin-bottom: 20px; font-weight: 400;">
+                Құрметті қонақ, тойға келетініңізді растаңыз:
+            </div>
             <form action="https://formspree.io/f/ВАШ_ID" method="POST">
-                <div class="form-group">
-                    <label for="name">Аты-жөніңіз (Ваше Имя):</label>
-                    <input type="text" name="Имя" id="name" class="form-control" placeholder="Асхат пен Аружан" required>
-                </div>
-                <div class="form-group">
-                    <label>Тойға келе аласыз ба?</label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="Присутствие" value="Приду один" checked>
-                            <span>Өзім келемін / Приду один(-очка)</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="Присутствие" value="Приду с парой">
-                            <span>Жұбыммен келемін / Приду с парой</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="Присутствие" value="Не смогу прийти">
-                            <span>Өкінішке орай, келе алмаймын</span>
-                        </label>
-                    </div>
-                </div>
-                <button type="submit" class="btn-submit">Жіберу / Отправить</button>
+                <input type="text" name="Имя Гостя" class="input-field" placeholder="Аты-жөніңіз" required>
+                <button type="submit" name="Ответ" value="Иә, өзім барамын!" class="select-option">Иә, өзім барамын!</button>
+                <button type="submit" name="Ответ" value="Отбасыммен келемін" class="select-option">Отбасыммен келемін</button>
+                <button type="submit" name="Ответ" value="Өкінішке орай, келе алмаймын" class="select-option" style="background-color: #8c8a82;">Өкінішке орай, келе алмаймын</button>
             </form>
         </section>
 
     </div>
 
-    <!-- СКРИПТЫ -->
+    <!-- СКРИПТЫ АНИМАЦИИ И РАБОТЫ -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ once: true, duration: 800 });
+        AOS.init({ once: true, duration: 900 });
 
         const openBtn = document.getElementById('openBtn');
-        const bookContainer = document.getElementById('bookContainer');
-        const bookWrapper = document.getElementById('bookWrapper');
+        const curtainWrapper = document.getElementById('curtainWrapper');
         const musicBtn = document.getElementById('musicBtn');
         const audio = document.getElementById('bgMusic');
 
-        // Функция открытия книги
+        // Логика раздвигания штор при клике
         openBtn.addEventListener('click', () => {
-            bookContainer.classList.add('opened');
+            curtainWrapper.classList.add('opened');
             
-            // Включаем музыку при открытии
-            audio.play().then(() => {
-                musicBtn.classList.add('rotating');
-            }).catch(e => console.log("Музыка ожидает взаимодействия"));
+            // Воспроизведение музыки
+            audio.play().catch(e => console.log("Музыка ждет ручного запуска"));
 
-            // Через секунду, когда обложка распахнулась, плавно убираем весь блок обложки, чтобы открыть скролл
+            // Полностью выключаем обложку после завершения анимации (1.2 сек)
             setTimeout(() => {
-                bookWrapper.classList.add('hidden');
-            }, 1000);
+                curtainWrapper.classList.add('hidden');
+            }, 1200);
         });
 
-        // Плеер
+        // Кнопка плеера
         musicBtn.addEventListener('click', () => {
             if (audio.paused) {
                 audio.play();
-                musicBtn.classList.add('rotating');
+                musicBtn.innerText = "🎵";
             } else {
                 audio.pause();
-                musicBtn.classList.remove('rotating');
+                musicBtn.innerText = "🔇";
             }
         });
 
-        // ТАЙМЕР НА 17 АВГУСТА 2026 (Август в JS — это 7)
-        const weddingDate = new Date(2026, 7, 17, 19, 0, 0).getTime();
-        setInterval(function() {
+        // Таймер обратного отсчета (12 сентября 2026)
+        const targetDate = new Date(2026, 8, 12, 18, 0, 0).getTime(); // Сентябрь — 8 месяц в JS
+        setInterval(() => {
             const now = new Date().getTime();
-            const distance = weddingDate - now;
-            if (distance < 0) return;
+            const diff = targetDate - now;
+            if (diff < 0) return;
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
-            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
-            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
-            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+            document.getElementById("days").innerText = d;
+            document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
+            document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
+            document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
         }, 1000);
     </script>
 </body>
