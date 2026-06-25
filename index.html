@@ -415,7 +415,14 @@
 
         <!-- СТРАНИЦА 3: ВРЕМЯ И МЕСТО ПРОВЕДЕНИЯ / ССЫЛКА НА 2GIS (image_3.png) -->
         <section class="page-section sec-location">
-            <div class="brushed-edge-top"></div>
+            <div class="location-dark-block" data-aos="fade-up">
+    <div class="section-headline" style="font-size: 2.6rem; color: #fff;">Мекен-жайымыз:</div>
+    <p class="address-text">
+        Алматы облысы, Талғар қаласы, Қайнарбулақ, 36 көшесі, “Duman Grand Hall” мейрамханасы
+    </p>
+    <!-- Вот она! Настоящая рабочая ссылка на поиск ресторана в 2GIS -->
+    <a href="https://2gis.kz/almaty/search/Duman%20Grand%20Hall" target="_blank" class="btn-gis">Картаны ашу (2GIS)</a>
+</div>
             
             <div class="section-headline" style="margin-top: 20px;">Басталу уақыты:</div>
             <div class="time-badge">18:00</div>
@@ -443,30 +450,30 @@
             <div class="form-dark-block" data-aos="fade-up">
                 <p class="form-title">Құрметті қонақ, тойға келетіндігіңізді растаңыз және қонақ санен белгілеңіз:</p>
                 
-                <form action="https://formspree.io/f/your-id" method="POST">
-                    <!-- Поле ввода имени -->
-                    <input type="text" name="Имя" class="input-style" placeholder="Аты жөніңіз" required>
-                    
-                    <!-- Выбор ответа (Приду / Не приду) -->
-                    <select name="Жауап (Статус)" id="statusSelect" class="select-style" required>
-                        <option value="" disabled selected>Тойға келесіз бе?</option>
-                        <option value="Иә, барамын">Иә, барамын! (Приду)</option>
-                        <option value="Өкінішке орай, келе алмаймын">Өкінішке орай, келе алмаймын</option>
-                    </select>
+               <form action="https://formspree.io/f/your-id" method="POST">
+    <!-- Поле для имени -->
+    <input type="text" name="Имя" class="input-style" placeholder="Аты жөніңіз" required>
+    
+    <!-- Шаг 1: Придет гость или нет -->
+    <select name="Жауап (Статус)" id="statusSelect" class="select-style" required>
+        <option value="" disabled selected>Тойға келесіз бе?</option>
+        <option value="Иә, барамын">Иә, барамын! (Приду)</option>
+        <option value="Өкінішке орай, келе алмаймын">Өкінішке орай, келе алмаймын</option>
+    </select>
 
-                    <!-- Выпадающий выбор количества человек (скрыт по умолчанию, плавно открывается, если гость идет) -->
-                    <div class="guests-count-wrapper" id="countWrapper">
-                        <select name="Адам саны (Количество гостей)" class="select-style">
-                            <option value="1 адам">Жалғыз өзім (1 человек)</option>
-                            <option value="2 адам">Жұбыммен (2 человека)</option>
-                            <option value="3 адам">3 адам</option>
-                            <option value="4 адам">4 адам</option>
-                            <option value="5+ адам">Отбасымызбен (5+ человек)</option>
-                        </select>
-                    </div>
-                    
-                    <button type="submit" class="btn-main-submit">Жауапты жіберу</button>
-                </form>
+    <!-- Шаг 2: Количество человек. Этот блок скрыт и открывается ТОЛЬКО если выбрать "Иә, барамын" -->
+    <div class="guests-count-wrapper" id="countWrapper">
+        <select name="Адам саны (Количество гостей)" class="select-style">
+            <option value="1 адам">Жалғыз өзім (1 человек)</option>
+            <option value="2 адам">Жұбыммен (2 человека)</option>
+            <option value="3 адам">3 адам</option>
+            <option value="4 адам">4 адам</option>
+            <option value="5+ адам">Отбасымызбен (5+ человек)</option>
+        </select>
+    </div>
+    
+    <button type="submit" class="btn-main-submit">Жауапты жіберу</button>
+</form>
             </div>
         </section>
 
@@ -535,6 +542,17 @@
             document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
             document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
         }, 1000);
+        const statusSelect = document.getElementById('statusSelect');
+        const countWrapper = document.getElementById('countWrapper');
+
+// Следим за выбором гостя: если он выбирает "Иә, барамын", плавно показываем выбор человек
+        statusSelect.addEventListener('change', function() {
+        if (this.value === "Иә, барамын") {
+        countWrapper.classList.add('open'); // Блок открывается
+        } else {
+        countWrapper.classList.remove('open'); // Блок скрывается, если гость не придет
+        }
+});
     </script>
 </body>
 </html>
