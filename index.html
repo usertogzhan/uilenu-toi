@@ -5,19 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Didar & Dana — Тойға шақыру</title>
     
-    <!-- Подключение шрифтов -->
+    <!-- Шрифты для дорогой эстетики -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght=0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     
-    <!-- Библиотека анимации AOS -->
+    <!-- Анимации AOS -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
         :root {
             --bg-color: #faf6f0;
-            --text-color: #3b3a36;
-            --accent-color: #bfa37a;
+            --text-color: #2c2b29;
+            --accent-color: #b39774;
+            --light-accent: #dfd5c6;
             --white: #ffffff;
             --font-title: 'Playfair Display', serif;
             --font-body: 'Montserrat', sans-serif;
@@ -31,14 +32,15 @@
         }
 
         body, html {
-            background-color: #1a1a18;
+            background-color: #141413;
             font-family: var(--font-body);
             color: var(--text-color);
             overflow-x: hidden;
             height: 100%;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* === ЭФФЕКТ РАЗДВИЖНЫХ ШТОР ИЗ ВИДЕО === */
+        /* === ЭФФЕКТ РАЗДВИЖНЫХ ШТОР === */
         .curtain-wrapper {
             position: fixed;
             top: 0;
@@ -56,30 +58,18 @@
             pointer-events: none;
         }
 
-        /* Две половинки экрана */
         .curtain-side {
             width: 50vw;
             height: 100vh;
-            background: linear-gradient(rgba(20, 20, 18, 0.85), rgba(20, 20, 18, 0.85)), 
+            background: linear-gradient(rgba(18, 17, 16, 0.88), rgba(18, 17, 16, 0.88)), 
                         url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
             position: relative;
-            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex;
-            align-items: center;
+            transition: transform 1.3s cubic-bezier(0.77, 0, 0.175, 1);
         }
 
-        .curtain-left {
-            transform-origin: left center;
-            justify-content: flex-end;
-            border-right: 1px solid rgba(255,255,255,0.1);
-        }
+        .curtain-left { transform-origin: left center; }
+        .curtain-right { transform-origin: right center; }
 
-        .curtain-right {
-            transform-origin: right center;
-            justify-content: flex-start;
-        }
-
-        /* Центрированный текст на обложке */
         .curtain-content {
             position: absolute;
             width: 100vw;
@@ -91,136 +81,153 @@
             justify-content: center;
             align-items: center;
             z-index: 10;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.6s ease;
         }
 
         .curtain-content h2 {
             font-family: var(--font-title);
-            font-size: 2.5rem;
+            font-size: 2.6rem;
             font-style: italic;
-            color: #f5eedc;
+            color: #f7f4eb;
             text-align: center;
             font-weight: 400;
             margin-bottom: 40px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            letter-spacing: 1px;
+            line-height: 1.4;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.6);
         }
 
-        /* Круглая кнопка НАЖМИТЕ */
         .btn-trigger {
-            width: 120px;
-            height: 120px;
-            background-color: #d1b48c;
-            color: #3b3a36;
-            border: 4px solid #fff;
+            width: 130px;
+            height: 130px;
+            background-color: var(--accent-color);
+            color: #fff;
+            border: 2px solid rgba(255,255,255,0.4);
             border-radius: 50%;
             font-family: var(--font-body);
-            font-size: 0.9rem;
-            font-weight: bold;
-            letter-spacing: 1px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
             cursor: pointer;
-            box-shadow: 0 0 25px rgba(209, 180, 140, 0.6), inset 0 0 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s, opacity 0.5s;
+            box-shadow: 0 0 30px rgba(179, 151, 116, 0.5);
+            transition: transform 0.3s, background-color 0.3s;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         .btn-trigger:hover {
-            transform: scale(1.08);
+            transform: scale(1.05);
+            background-color: #c5a985;
         }
 
-        /* Классы для запуска анимации */
-        .curtain-wrapper.opened .curtain-left {
-            transform: translateX(-100%);
-        }
-        .curtain-wrapper.opened .curtain-right {
-            transform: translateX(100%);
-        }
-        .curtain-wrapper.opened .curtain-content {
-            opacity: 0;
-            pointer-events: none;
-        }
+        .curtain-wrapper.opened .curtain-left { transform: translateX(-100%); }
+        .curtain-wrapper.opened .curtain-right { transform: translateX(100%); }
+        .curtain-wrapper.opened .curtain-content { opacity: 0; pointer-events: none; }
 
-        /* === ОСНОВНОЙ КОНТЕНТ САЙТА === */
+        /* === ВНУТРЕННИЙ МИР САЙТА (КАК НА ВИДЕО) === */
         .main-content {
             background-color: var(--bg-color);
             min-height: 100vh;
             width: 100%;
-            max-width: 480px;
+            max-width: 460px;
             margin: 0 auto;
             text-align: center;
-            padding-bottom: 60px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.2);
+            padding-bottom: 80px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.15);
+            position: relative;
         }
 
-        /* Секция с фотографией и рваным краем */
+        /* Главная карточка с фото и рваным краем */
         .hero-section {
             position: relative;
             width: 100%;
-            height: 65vh;
+            height: 60vh;
             background: url('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1000&auto=format&fit=crop') center/cover no-repeat;
         }
 
-        /* Эффект рваной бумаги снизу фото */
         .hero-section::after {
             content: '';
             position: absolute;
-            bottom: -2px;
+            bottom: -1px;
             left: 0;
             width: 100%;
-            height: 40px;
+            height: 35px;
             background-color: var(--bg-color);
-            /* Маска в виде рваных волн */
-            clip-path: polygon(0% 100%, 100% 100%, 100% 40%, 95% 70%, 88% 30%, 80% 65%, 72% 35%, 65% 75%, 58% 45%, 50% 80%, 42% 40%, 35% 70%, 27% 30%, 20% 65%, 12% 35%, 5% 70%, 0% 40%);
+            clip-path: polygon(0% 100%, 100% 100%, 100% 40%, 96% 65%, 91% 35%, 85% 60%, 79% 30%, 72% 65%, 66% 35%, 60% 60%, 54% 35%, 48% 65%, 42% 30%, 35% 60%, 29% 35%, 22% 65%, 15% 30%, 8% 60%, 0% 35%);
         }
 
         section {
-            padding: 40px 24px;
+            padding: 50px 25px;
+        }
+
+        .wedding-day-text {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: #96938c;
+            margin-bottom: 10px;
         }
 
         .names-title {
             font-family: var(--font-script);
-            font-size: 3.5rem;
+            font-size: 3.8rem;
             color: var(--text-color);
-            margin: 20px 0 10px 0;
-        }
-
-        .wedding-day-text {
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            color: #8c8a82;
+            line-height: 1.1;
             margin-bottom: 15px;
         }
 
         .main-date {
             font-family: var(--font-title);
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             color: var(--accent-color);
-            letter-spacing: 2px;
-            margin-bottom: 40px;
+            letter-spacing: 3px;
+        }
+
+        /* Элегантный разделитель */
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            width: 60%;
+            opacity: 0.5;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--accent-color), transparent);
+        }
+        .divider span {
+            padding: 0 10px;
+            color: var(--accent-color);
+            font-size: 0.8rem;
         }
 
         .title-gold {
-            font-family: var(--font-script);
-            font-size: 3.5rem;
+            font-family: var(--font-title);
+            font-size: 2rem;
             color: var(--accent-color);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            font-weight: 400;
+            letter-spacing: 1px;
         }
 
         .invitation-text {
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 300;
-            color: #555552;
+            color: #4a4945;
             line-height: 1.8;
+            letter-spacing: 0.3px;
         }
 
-        /* ТАЙМЕР */
+        /* ТАЙМЕР С ВИДЕО */
         .timer-grid {
             display: flex;
             justify-content: space-between;
-            max-width: 340px;
-            margin: 30px auto;
+            max-width: 320px;
+            margin: 20px auto;
         }
         .timer-box {
             text-align: center;
@@ -228,158 +235,217 @@
         }
         .timer-num {
             font-family: var(--font-title);
-            font-size: 2rem;
+            font-size: 2.2rem;
             color: var(--text-color);
+            font-weight: 400;
             display: block;
         }
         .timer-label {
             font-size: 0.7rem;
             text-transform: uppercase;
-            color: #8c8a82;
+            color: #929089;
             letter-spacing: 1px;
+            margin-top: 5px;
+            display: block;
         }
 
-        /* КАЛЕНДАРЬ */
+        /* КАЛЕНДАРЬ С СЕРДЕЧКОМ */
         .calendar-card {
             background: var(--white);
-            padding: 25px 20px;
-            border-radius: 2px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            margin: 20px auto;
+            padding: 30px 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(179, 151, 116, 0.05);
+            margin: 10px auto;
             max-width: 340px;
         }
         .calendar-month-title {
             font-family: var(--font-title);
             font-size: 1.1rem;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             letter-spacing: 2px;
             text-transform: uppercase;
+            color: var(--text-color);
         }
         .calendar-grid {
             width: 100%;
             border-collapse: collapse;
         }
         .calendar-grid th {
-            font-size: 0.75rem;
-            color: #999;
-            padding-bottom: 12px;
+            font-size: 0.8rem;
+            color: #b3b1aa;
+            padding-bottom: 15px;
             font-weight: 400;
+            text-transform: uppercase;
         }
         .calendar-grid td {
-            padding: 10px 0;
-            font-size: 0.95rem;
+            padding: 12px 0;
+            font-size: 1rem;
             position: relative;
+            color: #444;
         }
         .calendar-grid td.wedding-day {
             color: var(--white);
+            font-weight: 600;
             z-index: 1;
         }
-        /* Сердечко вокруг даты */
+        /* Пульсирующее сердечко из видео */
         .calendar-grid td.wedding-day::before {
             content: '❤️';
             position: absolute;
             left: 50%;
-            top: 48%;
+            top: 45%;
             transform: translate(-50%, -50%);
-            font-size: 1.9rem;
+            font-size: 2.1rem;
             z-index: -1;
+            animation: heartBeat 1.2s infinite;
+        }
+
+        @keyframes heartBeat {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.15); }
+            100% { transform: translate(-50%, -50%) scale(1); }
         }
 
         .section-subtitle {
             font-family: var(--font-title);
-            font-size: 1.2rem;
-            letter-spacing: 2px;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
             margin-bottom: 15px;
             text-transform: uppercase;
+            color: #7a7872;
         }
 
         .time-display {
-            font-size: 2rem;
+            font-size: 2.4rem;
             font-family: var(--font-title);
             color: var(--accent-color);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-weight: 300;
         }
 
         /* КНОПКА КАРТЫ */
         .btn-map-link {
             display: inline-block;
-            background-color: #222;
+            background-color: var(--text-color);
             color: #fff;
-            padding: 14px 40px;
+            padding: 15px 45px;
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             letter-spacing: 2px;
             text-transform: uppercase;
+            border-radius: 30px;
             margin-top: 15px;
-            transition: background-color 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
         }
         .btn-map-link:hover {
             background-color: var(--accent-color);
+            transform: translateY(-2px);
         }
 
-        /* АНКЕТА */
+        /* КНОПКИ АНКЕТЫ С ВИДЕО */
+        .form-container {
+            max-width: 340px;
+            margin: 0 auto;
+        }
         .input-field {
             width: 100%;
-            padding: 14px;
-            background-color: #f2ede4;
-            border: none;
-            margin-bottom: 15px;
+            padding: 16px;
+            background-color: #f5eedf;
+            border: 1px solid #e8dfce;
+            border-radius: 30px;
+            margin-bottom: 20px;
             font-family: var(--font-body);
             font-size: 0.95rem;
             outline: none;
             text-align: center;
+            color: var(--text-color);
         }
         .select-option {
             width: 100%;
-            padding: 14px;
-            background-color: #222;
-            color: #fff;
-            border: none;
+            padding: 16px;
+            background-color: var(--white);
+            color: var(--text-color);
+            border: 1px solid #e0dacb;
+            border-radius: 30px;
             font-family: var(--font-body);
             font-size: 0.9rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            font-weight: 500;
+            letter-spacing: 0.5px;
             cursor: pointer;
-            margin-bottom: 10px;
-            transition: opacity 0.3s;
+            margin-bottom: 12px;
+            transition: all 0.25s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.02);
         }
         .select-option:hover {
-            opacity: 0.9;
+            background-color: var(--text-color);
+            color: var(--white);
+            border-color: var(--text-color);
         }
 
-        /* МУЗЫКАЛЬНЫЙ ПЛЕЕР */
+        /* НЕОБЫЧНЫЙ ПЛЕЕР (МУЗЫКАЛЬНАЯ ВОЛНА С КРУГОМ) */
         .audio-control {
             position: fixed;
-            bottom: 30px;
-            left: 30px;
+            bottom: 25px;
+            left: 25px;
             z-index: 1000;
         }
         .audio-wave-btn {
-            background-color: rgba(255,255,255,0.9);
-            border: none;
-            width: 45px;
-            height: 45px;
+            background-color: rgba(44, 43, 41, 0.95);
+            border: 1px solid rgba(255,255,255,0.1);
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.2rem;
+        }
+        .wave-icon {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 18px;
+        }
+        .wave-line {
+            width: 3px;
+            height: 100%;
+            background-color: var(--white);
+            border-radius: 2px;
+            animation: waveAnim 1s ease-in-out infinite alternate;
+            animation-play-state: paused;
+        }
+        .wave-line:nth-child(2) { animation-delay: 0.2s; height: 60%; }
+        .wave-line:nth-child(3) { animation-delay: 0.4s; height: 80%; }
+        
+        .playing .wave-line {
+            animation-play-state: running;
+        }
+
+        @keyframes waveAnim {
+            0% { height: 20%; }
+            100% { height: 100%; }
         }
     </style>
 </head>
 <body>
 
-    <!-- МУЗЫКА -->
+    <!-- МУЗЫКАЛЬНЫЙ ПЛЕЕР (АККУРАТНЫЙ КРУЖОК С АНИМАЦИЕЙ ВОЛНЫ) -->
     <div class="audio-control">
-        <button class="audio-wave-btn" id="musicBtn">🎵</button>
+        <button class="audio-wave-btn" id="musicBtn">
+            <div class="wave-icon" id="waveIcon">
+                <div class="wave-line"></div>
+                <div class="wave-line"></div>
+                <div class="wave-line"></div>
+            </div>
+        </button>
         <audio id="bgMusic" loop>
             <source src="music.mp3" type="audio/mpeg">
         </audio>
     </div>
 
-    <!-- РАЗДВИЖНЫЕ ШТОРЫ (ОБЛОЖКА ИЗ ВИДЕО) -->
+    <!-- РАЗДВИЖНЫЕ ШТОРЫ (ИДЕАЛЬНО ИЗ ВИДЕО) -->
     <div class="curtain-wrapper" id="curtainWrapper">
         <div class="curtain-side curtain-left"></div>
         <div class="curtain-side curtain-right"></div>
@@ -392,18 +458,20 @@
     <!-- ОСНОВНОЙ САЙТ -->
     <div class="main-content">
         
-        <!-- ФОТО И ИМЕНА -->
+        <!-- ТОП ФОТО С КРАЕМ ИЗ БУМАГИ -->
         <div class="hero-section"></div>
         
-        <section style="padding-top: 10px;">
+        <section style="padding-top: 15px; padding-bottom: 20px;">
             <div class="wedding-day-text">Wedding Day</div>
             <div class="names-title">Didar & Dana</div>
-            <div class="main-date">12 / 9 / 2026</div>
+            <div class="main-date">12 / 09 / 2026</div>
         </section>
+
+        <div class="divider"><span>✦</span></div>
 
         <!-- ТЕКСТ ПРИГЛАШЕНИЯ -->
         <section data-aos="fade-up">
-            <div class="title-gold">Құрметті</div>
+            <div class="title-gold">Құрметті қонақтар!</div>
             <div class="invitation-text">
                 Ағайын-туыс, бауырлар, құда-жекжат, нағашы-жиен, бөлелер, құрбы-құрдас, дос-жарандар, әріптестер, көршілер! Сіз(дер)ді ұлымыз Дидар мен келініміз Дананың үйлену тойына арналған салтанатты ақ дастарханымыздың қадірлі қонағы болуға шақырамыз!
             </div>
@@ -419,7 +487,9 @@
             </div>
         </section>
 
-        <!-- КАЛЕНДАРЬ С СЕРДЕЧКОМ -->
+        <div class="divider"><span>✦</span></div>
+
+        <!-- КАЛЕНДАРЬ -->
         <section data-aos="fade-up">
             <div class="section-subtitle">Той салтанаты:</div>
             <div class="calendar-card">
@@ -441,78 +511,87 @@
             </div>
         </section>
 
-        <!-- УКАЗАНИЕ ВРЕМЕНИ -->
+        <!-- ВРЕМЯ -->
         <section data-aos="fade-up">
             <div class="section-subtitle">Басталу уақыты:</div>
             <div class="time-display">18:00</div>
         </section>
 
+        <div class="divider"><span>✦</span></div>
+
         <!-- МЕСТО ПРОВЕДЕНИЯ -->
         <section data-aos="fade-up">
             <div class="section-subtitle">Мекен-жайымыз:</div>
-            <div class="invitation-text" style="font-weight: 400;">
-                Алматы облысы, Талғар қаласы, Қайнарбулақ, 36 көшесі, «Duman Grand Hall» мейрамханасы
+            <div class="invitation-text" style="font-weight: 400; margin-bottom: 10px;">
+                «Duman Grand Hall» мейрамханасы
+            </div>
+            <div class="invitation-text" style="font-size: 0.9rem; color: #7a7872;">
+                Алматы облысы, Талғар қаласы, Қайнарбулақ, 36 көшесі
             </div>
             <a href="https://2gis.kz" target="_blank" class="btn-map-link">Картаны ашу</a>
         </section>
 
+        <div class="divider"><span>✦</span></div>
+
         <!-- ТОЙ ИЕЛЕРІ -->
         <section data-aos="fade-up">
             <div class="section-subtitle">Той иелері:</div>
-            <div class="names-title" style="font-size: 2.8rem; margin-top: 5px;">Әлімхан - Айгүл</div>
+            <div class="names-title" style="font-size: 2.8rem; margin-top: 5px; color: var(--accent-color);">Әлімхан - Айгүл</div>
         </section>
 
-        <!-- АНКЕТА ГОСТЯ -->
+        <!-- АНКЕТА -->
         <section data-aos="fade-up">
-            <div class="invitation-text" style="margin-bottom: 20px; font-weight: 400;">
-                Құрметті қонақ, тойға келетініңізді растаңыз:
+            <div class="section-subtitle" style="margin-bottom: 25px;">Сауалнама</div>
+            <div class="form-container">
+                <form action="https://formspree.io/f/ВАШ_ID" method="POST">
+                    <input type="text" name="Имя Гостя" class="input-field" placeholder="Аты-жөніңізді жазыңыз" required>
+                    <button type="submit" name="Ответ" value="Иә, өзім барамын!" class="select-option">Иә, өзім барамын!</button>
+                    <button type="submit" name="Ответ" value="Жұбыммен келемін" class="select-option">Жұбыммен келемін</button>
+                    <button type="submit" name="Ответ" value="Өкінішке орай, келе алмаймын" class="select-option" style="color: #929089;">Өкінішке орай, келе алмаймын</button>
+                </form>
             </div>
-            <form action="https://formspree.io/f/ВАШ_ID" method="POST">
-                <input type="text" name="Имя Гостя" class="input-field" placeholder="Аты-жөніңіз" required>
-                <button type="submit" name="Ответ" value="Иә, өзім барамын!" class="select-option">Иә, өзім барамын!</button>
-                <button type="submit" name="Ответ" value="Отбасыммен келемін" class="select-option">Отбасыммен келемін</button>
-                <button type="submit" name="Ответ" value="Өкінішке орай, келе алмаймын" class="select-option" style="background-color: #8c8a82;">Өкінішке орай, келе алмаймын</button>
-            </form>
         </section>
 
     </div>
 
-    <!-- СКРИПТЫ АНИМАЦИИ И РАБОТЫ -->
+    <!-- СКРИПТЫ АНИМАЦИИ -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ once: true, duration: 900 });
+        AOS.init({ once: true, duration: 1000 });
 
         const openBtn = document.getElementById('openBtn');
         const curtainWrapper = document.getElementById('curtainWrapper');
         const musicBtn = document.getElementById('musicBtn');
+        const waveIcon = document.getElementById('waveIcon');
         const audio = document.getElementById('bgMusic');
 
-        // Логика раздвигания штор при клике
+        // Открытие штор
         openBtn.addEventListener('click', () => {
             curtainWrapper.classList.add('opened');
             
-            // Воспроизведение музыки
-            audio.play().catch(e => console.log("Музыка ждет ручного запуска"));
+            // Запуск музыки
+            audio.play().then(() => {
+                waveIcon.classList.add('playing');
+            }).catch(e => console.log("Ожидание клика для музыки"));
 
-            // Полностью выключаем обложку после завершения анимации (1.2 сек)
             setTimeout(() => {
                 curtainWrapper.classList.add('hidden');
-            }, 1200);
+            }, 1300);
         });
 
-        // Кнопка плеера
+        // Плеер
         musicBtn.addEventListener('click', () => {
             if (audio.paused) {
                 audio.play();
-                musicBtn.innerText = "🎵";
+                waveIcon.classList.add('playing');
             } else {
                 audio.pause();
-                musicBtn.innerText = "🔇";
+                waveIcon.classList.remove('playing');
             }
         });
 
         // Таймер обратного отсчета (12 сентября 2026)
-        const targetDate = new Date(2026, 8, 12, 18, 0, 0).getTime(); // Сентябрь — 8 месяц в JS
+        const targetDate = new Date(2026, 8, 12, 18, 0, 0).getTime();
         setInterval(() => {
             const now = new Date().getTime();
             const diff = targetDate - now;
