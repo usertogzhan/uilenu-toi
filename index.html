@@ -429,13 +429,17 @@
     <!-- Логика Таймера и Отправки -->
     <script>
     // Устанавливаем дату свадьбы: 17 августа 2026 года, 19:00
-    const targetDate = new Date(2026,7,12,18,0,0).getTime();
+    const targetDate = new Date(2026,7,17,19,0,0).getTime();
 
     // Обновляем таймер каждую секунду
-    setInterval(() => {
+    const timer = setInterval(() => {
         const now = new Date().getTime();
         const diff = targetDate - now;
-        if (diff < 0) return;
+        if (diff <= 0) {
+        clearInterval(timer);
+        ['days','hours','minutes','seconds'].forEach(id=>document.getElementById(id).innerText='00');
+        return;
+    }
 
         // Расчет времени для дней, часов, минут и секунд
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -447,33 +451,13 @@
         document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
         document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
         document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
+    
+    document.querySelectorAll('.countdown-num').forEach(num=>{
+      num.animate([{transform:'scale(1.15)'},{transform:'scale(1)'}],{duration:250});
+    });
     }, 1000);
-    </script>
-        const sections = document.querySelectorAll('.section, .location-section');
-
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting){
-                    entry.target.classList.add('show');
-                }
-            });
-        },{
-            threshold:0.2
-        });
-
-        sections.forEach(section=>{
-            observer.observe(section);
-    });
-    document.querySelectorAll(".countdown-num").forEach(num=>{
-
-        num.animate([
-            {transform:"scale(1.2)"},
-            {transform:"scale(1)"}
-        ],{
-            duration:250
-        });
-
-    });
-</body>
-</html>
-
+    
+const sections = document.querySelectorAll('.section, .location-section');
+const observer = new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting) entry.target.classList.add('show');});},{threshold:0.2});
+sections.forEach(section=>observer.observe(section));
+</script>
