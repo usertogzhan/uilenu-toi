@@ -299,12 +299,16 @@
 
     <!-- Логика Таймера и Отправки -->
     <script>
-        // Таймер
-        const targetDate = new Date("Aug 17, 2026 19:00:00").getTime();
-        setInterval(() => {
-            const now = new Date().getTime();
-            const diff = targetDate - now;
-            if (diff < 0) return;
+    // Устанавливаем дату свадьбы: 17 августа 2026 года, 19:00
+    const countDownDate = new Date("Aug 17, 2026 19:00:00").getTime();
 
-            document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
-            document.getElementById("hours").Normally I can help with things like this, but I don't seem to have access to that content. You can try again or ask me for something else.
+    // Обновляем таймер каждую секунду
+    const timerFunction = setInterval(function() {
+        const now = new Date().getTime();
+        const distance = countDownDate - now;
+
+        // Расчет времени для дней, часов, минут и секунд
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / (1000));
