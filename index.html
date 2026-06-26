@@ -300,18 +300,19 @@
     <!-- Логика Таймера и Отправки -->
     <script>
     // Устанавливаем дату свадьбы: 17 августа 2026 года, 19:00
-    const countDownDate = new Date("Aug 17, 2026 19:00:00").getTime();
+    const targetDate = new Date(2026,8,12,18,0,0).getTime();
 
     // Обновляем таймер каждую секунду
-    const timerFunction = setInterval(function() {
+    setInterval(() => {
         const now = new Date().getTime();
-        const distance = countDownDate - now;
+        const diff = targetDate - now;
+        if (diff < 0) return;
 
         // Расчет времени для дней, часов, минут и секунд
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((distance % (1000 * 60)) / 1000);
 
         document.getElementById("days").innerText = d;
         document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
